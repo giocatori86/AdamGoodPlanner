@@ -91,5 +91,28 @@ distances = [[cell['distance']['value'] for cell in row['elements']] for row in 
 print(durations)
 print(distances)
 
+# Okay, let's solve via some TSP with some greedy Viterbi algorithm
+visited = [False for i in range(len(coordinates))]
+visited[0] = True
+chain = [0]
+chain_distances = [0]
+while len(chain) != len(coordinates):
+    min_distance = 10000000
+    next_place = None
+    for i in range(len(coordinates)):
+        if visited[i] == False:
+            d = distances[chain[-1]][i]
+            if d < min_distance:
+                min_distance = d
+                next_place = i
+    visited[next_place] = True
+    chain.append(next_place)
+    chain_distances.append(min_distance)
+
+print('Your plan:')
+for idx, dd in zip(chain, chain_distances):
+    print('Visit:', places[idx]['name'], ':: +', dd, 'meters')
+
+
 
 #pprint.pprint(places)
