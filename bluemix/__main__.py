@@ -41,7 +41,7 @@ if (r.status_code != requests.codes.ok):
 
 answers = json.loads(r.text)
 
-print(answers['question']['synonymList'])
+#print(answers['question']['synonymList'])
 lemas = [lema['value'] for lema in answers['question']['synonymList']
          if lema['partOfSpeech'] == 'noun']
 print('Request:', lemas)
@@ -60,16 +60,36 @@ places = client.venues.search(params={'query': ' '.join(lemas),
                                       'near': 'Amsterdam',
                                       'limit': 10})['venues']
 
+coordinates = []
 for place in places:
     print('--------------')
     print('Name:', place['name'])
     print('ID:', place['id'])
     if 'address' in place['location']:
         print('Location:', place['location']['address'])#, place['location']['postalCode'])
+    
+    coordinates.append('%f,%f' % (place['location']['lat'], place['location']['lng']))
+    print('Coordinates: %f,%f' % (place['location']['lat'], place['location']['lng']))
     print('Category:', place['categories'][0]['name'])
     if 'phone' in place['contact']:
         print('Contact:', place['contact']['phone'])
 
 #pprint.pprint(dir(places))
+
+origins = '|'.join(coordinates)
+destinations = origins
+
+url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=%s' \
+            % (origins,
+               destinations,
+               config['Google']['key'])
+r = requests.get(url)
+#print(r.text)
+distances = json.loads(r.text)['rows']
+durations = [[cell['duration']['value'] for cell in row['elements']] for row in distances]
+distances = [[cell['distance']['value'] for cell in row['elements']] for row in distances]
+print(durations)
+print(distances)
+
 
 #pprint.pprint(places)
