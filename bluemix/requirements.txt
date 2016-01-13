@@ -1,0 +1,4 @@
+foursquare
+google-api-python-client
+Flask
+Flask-RESTful
