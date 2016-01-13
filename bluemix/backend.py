@@ -3,6 +3,7 @@ import foursquare
 import requests
 import pprint
 import time
+import urllib.request
 
 _WATSON_URL = 'https://dal09-gateway.watsonplatform.net/instance/568/deepqa/v1/question'
 
@@ -15,6 +16,8 @@ class Place(object):
         else:
             self.id = meta['id']
         self.name = meta['name']
+        
+        self.congestion = Congestion(self.name.replace(" ", "+"))
         
         photos = fs_client.venues.photos(VENUE_ID=self.id, params={})
         if photos['photos']['count']:
@@ -54,6 +57,18 @@ class Place(object):
             self.duration = duration
         else:
             self.duration = None
+        
+    def Congestion(keyword):
+        loader = urllib.request.build_opener();
+        loader.addheaders = [('User-agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36')]
+        page = str(loader.open("https://www.google.com/search?q=" + keyword).read())
+        try:
+            index = page.index("lubh-bar _TMh")
+        except ValueError:
+            raise("BusinessNotFound")
+        start = index+29
+        end = index+31
+        return str((int(page[start:end])*10)/80)[0:3] #Output score (Div max height is 80, score is percentage)
 
 class Recommender:
     def __init__(self, config):
