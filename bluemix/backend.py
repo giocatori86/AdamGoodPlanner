@@ -27,6 +27,8 @@ class Place(object):
             start = index+29
             end = index+31
             self.congestion = str((int(page[start:end])*10)/80)[0:3]
+        except:
+            pass
          #Output score (Div max height is 80, score is percentage)
         
         photos = fs_client.venues.photos(VENUE_ID=self.id, params={})
