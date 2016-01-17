@@ -78,7 +78,7 @@ class Plan(Resource):
             except:
                 print('Error')
                 continue
-        return [{'id': list_of_places[idx].id, 'distance': distance, 'time': time, 'congestion': congestion} for idx, distance, time, congestion in recommender.plan(list_of_places)]
+        return [{'id': list_of_places[idx].id, 'distance': distance, 'time': time, 'congestion': list_of_places[idx].congestion} for idx, distance, time in recommender.plan(list_of_places)]
 
     def get(self):
         return self.parse()
