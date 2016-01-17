@@ -22,8 +22,11 @@ Full working Front-End With
 - TimeLine Representation With Possibility to Remove Recommendations
 - Notifications and Progress Dialogs.
 - etc.
-- 
 
 ### Prototype
 
-It is still a rapid prototype!
+It is still a rapid prototype! 
+
+### Cowboy Coding
+
+One more dedication to Cowboy Coding
