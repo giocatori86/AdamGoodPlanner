@@ -18,6 +18,7 @@ class Place(object):
         self.name = meta['name']
         
         # Congestion
+        self.congestion = "0.0"
         loader = urllib.request.build_opener();
         loader.addheaders = [('User-agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36')]
         page = str(loader.open("https://www.google.com/search?q=" + self.name.replace(" ", "+")).read())
