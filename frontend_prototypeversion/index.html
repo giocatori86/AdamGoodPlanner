@@ -6,24 +6,42 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>Group 3 Example Layout</title>
+	<title>AdamGoodPlanner - Group 3 IBM Watson Innovation Course</title>
 
 	<!-- CSS -->
 	<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link href="assets/css/font-awesome.min.css" rel="stylesheet" media="screen">
 	<link href="assets/css/simple-line-icons.css" rel="stylesheet" media="screen">
 	<link href="assets/css/animate.css" rel="stylesheet">
-	
-  
-	<!-- Custom styles CSS -->
 	<link href="assets/css/style.css" rel="stylesheet">
   <link href="assets/css/styles.css" rel="stylesheet">
+  <link href="/assets/css/bootstrap-switch.css" rel="stylesheet"> 
   <link href="assets/css/bootstrap-glyphicons.css">
-  <script src="assets/js/modernizr.custom.js"></script>
-  <script src="assets/js/jquery-1.11.0.min.js"></script>
   
-</head>
-<body>
+    <!-- JS -->
+ <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/js/jquery.parallax-1.1.3.js"></script>
+  <script src="assets/js/imagesloaded.pkgd.js"></script>
+  <script src="assets/js/jquery.sticky.js"></script>
+  <script src="assets/js/smoothscroll.js"></script>
+  <script src="assets/js/wow.min.js"></script>
+  <script src="assets/js/jquery.easypiechart.js"></script>
+  <script src="assets/js/waypoints.min.js"></script>
+  <script src="assets/js/jquery.cbpQTRotator.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.js"></script>
+  <script src="assets/js/custom.js"></script>
+  <script src="assets/js/json3.js"></script>
+  <script src="assets/js/jquery.cookie.js"></script>
+  <script src="assets/js/jquery.SuperCookie.js"></script>
+  <script type="text/javascript" src="assets/js/output.js"></script>
+  <script src="assets/js/modernizr.custom.js"></script>
+
+  <script src="bootstrap-switch.js"></script>
+
+  </head>
+
+  <body onload="loadData()" >
 
 	<!-- Preloader -->
 
@@ -38,17 +56,11 @@
     <div class="intro">
       <div id="custom-search-input">
         <div class="input-group col-md-12">
-          <input type="text" class="  search-query form-control" placeholder="What do you wanna do today?" />
+          <input type="text" class="  search-query form-control" placeholder="What do you wanna do today?" id="question" id= />
           <span class="input-group-btn">
-            <button class="btn btn-danger" type="button">
-              <span class="glyphicon glyphicon-time"></span>
-            </button>
-            <button class="btn btn-success" type="button">
-              <span class="glyphicon glyphicon-plus"></span>
-            </button>
-            <button class="btn btn-info" type="button">
-              <span class="glyphicon glyphicon-bullhorn"></span>
-            </button>
+            <button type="submit" id="myButton" data-loading-text="Searching" class="btn btn-primary" autocomplete="off">
+  			Search
+  		</button>
           </span>
         </div>
       </div>
@@ -56,13 +68,14 @@
   </div>	
 </div>
 
-<a href="#services">
+
+
   <div class="scroll-down">
     <span>
       <i class="fa fa-angle-down fa-2x"></i>
     </span>
   </div>
-</a>
+
 
 </section>
 
@@ -75,21 +88,23 @@
   <nav class="navbar navbar-custom" role="navigation">
 
    <div class="container">
-
-    <div class="navbar-header">
      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#custom-collapse">
       <span class="sr-only">Toggle navigation</span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="index.html">Tourist Guide</a>
+
+    <p class="navbar-brand">Tourist Guide</p>
+
   </div>
 
   <div class="collapse navbar-collapse" id="custom-collapse">
    <ul class="nav navbar-nav navbar-right">
-    <li><a href="#planning">Plans For Today</a></li>
-    <li><a href="#account">Your account</a></li>
+    <div class="navbar-header">
+  <a href="#TimeLine" id=  "schedule">Schedule for today <span class="badge"> </span></a><br>
+
+
 
   </ul>
 </div>
@@ -102,125 +117,410 @@
 
 <!-- Navigation end -->
 
+<section id = "nothing" class="pfblock pfblock-gray">
+<center>
+<div class="jumbotron">
+<p><span style="font-size:4em;" class="glyphicon glyphicon-tag"></span></p>
+  <h1>You have not selected enough locations.</h1>
+  <p>please select at least two locations</p>
+</div>
+</center>
+  </div>
+</section>
+
+
+<section id="attractions" class="pfblock pfblock-gray">
+    <!-- Page Content -->
+    <div class="container"id="Recommendations" style="display: none">
+    <div class="modal fade bs-example-modal-sm" id="myPleaseWait" tabindex="-1"
+    role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span class="glyphicon glyphicon-time">
+                    </span>Please Wait
+                 </h4>
+            </div>
+            <div class="modal-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info
+                    progress-bar-striped active"
+                    style="width: 100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+            <right>
+                    <button type="button" class="btn btn-default" aria-label="Right Align" onclick="CloseRecommendations()">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Close Recommendations
+            </button>
+            <br><br><br>
+            </right>
+                
+                
+            </div>     
+        </div>
+        <!-- /.row -->
+
+        <!-- Project One -->
+        <div class="row">
+            <div class="col-md-7">
+                <a href="#">
+                    <img id="Photo_Location_1">
+                </a>
+            </div>
+            <div class="col-md-5">
+                <button type = "button" class = "btn btn-default btn-sm" onclick="AddLocation(result[0])">
+   				<span class = "glyphicon glyphicon-plus"></span> 
+   				</button>
+   				<br><br><br>
+                <h4 id ="Distance_Location_1"></h4>
+                <h3 id = "Name_Location_1"> </h3>
+                <h4 id ="Category_Location_1"></h4>
+                <h4 id ="Congestion_Location_1"></h4>
+                <h4 id="Sort_Location_1"></h4>	
+                <h4 id ="Phone_Location_1"></h4>
+              
+
+            </div>
+        </div>
+
+
+
+
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- /.row -->
+       <!-- Project One -->
+        <div class="row">
+            <div class="col-md-7">
+                <a href="#">
+                    <img id="Photo_Location_2">
+                </a>
+            </div>
+            <div class="col-md-5">
+                <button type = "button" class = "btn btn-default btn-sm" onclick="AddLocation(result[1])">
+   				<span class = "glyphicon glyphicon-plus"></span> 
+   				</button>
+   				<br><br><br>
+                <h4 id ="Distance_Location_2"></h4>
+                <h3 id = "Name_Location_2"> </h3>
+                <h4 id ="Category_Location_2"></h4>
+                <h4 id ="Congestion_Location_2"></h4>
+                <h4 id="Sort_Location_2"></h4>	
+                <h4 id ="Phone_Location_2"></h4>
+                
+               
+            </div>
+        </div>
+
+
+
+
+        <!-- /.row -->
+
+        <hr>
+
+        
+           <!-- Project One -->
+        <div class="row">
+            <div class="col-md-7">
+                <a href="#">
+                    <img id="Photo_Location_3">
+                </a>
+            </div>
+            <div class="col-md-5">
+                <button type = "button" class = "btn btn-default btn-sm"onclick="AddLocation(result[2])">
+   				<span class = "glyphicon glyphicon-plus"></span> 
+   				</button>
+   				<br><br><br>
+                <h4 id ="Distance_Location_3"></h4>
+                <h3 id = "Name_Location_3"> </h3>
+                <h4 id ="Category_Location_3"></h4>
+                <h4 id ="Congestion_Location_3"></h4>
+                <h4 id="Sort_Location_3"></h4>	
+                <h4 id ="Phone_Location_3"></h4>
+                
+                
+            </div>
+        </div>
+
+
+
+
+        <!-- /.row -->
+
+        <hr>
+
+        
+    
+        <div class="row">
+            <div class="col-md-7">
+                <a href="#">
+                    <img id="Photo_Location_4">
+                </a>
+            </div>
+            <div class="col-md-5">
+                <button type = "button" class = "btn btn-default btn-sm"onclick="AddLocation(result[3])">
+   				<span class = "glyphicon glyphicon-plus"></span> 
+   				</button>
+   				<br><br><br>
+                <h4 id ="Distance_Location_4"></h4>
+                <h3 id = "Name_Location_4"> </h3>
+                <h4 id ="Category_Location_4"></h4>
+                <h4 id ="Congestion_Location_4"></h4>
+                <h4 id="Sort_Location_4"></h4>	
+                <h4 id ="Phone_Location_4"></h4>
+                
+                
+            </div>
+        </div>
+
+
+
+
+        <!-- /.row -->
+
+        <hr>
+
+        
+         
+        <div class="row">
+            <div class="col-md-7">
+                <a href="#">
+                    <img id="Photo_Location_5">
+                </a>
+            </div>
+            <div class="col-md-5">
+                <button type = "button" class = "btn btn-default btn-sm" onclick="AddLocation(result[4])">
+   				<span class = "glyphicon glyphicon-plus"></span> 
+   				</button>
+   				<br><br><br>
+                <h4 id ="Distance_Location_5"></h4>
+                <h3 id = "Name_Location_5"> </h3>
+                <h4 id ="Category_Location_5"></h4>
+                <h4 id ="Congestion_Location_5"></h4>
+                <h4 id="Sort_Location_5"></h4>	
+                <h4 id ="Phone_Location_5"></h4>
+
+                
+            </div>
+        </div>
+
+
+
+
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+
 <!-- Services start -->
 
 <section id="planning" class="pfblock pfblock-gray">
-  <div class="container">
-   <!--later on this <div> are made by some javascript.-->
+  <div class="container"id="TimeLine" style="display: none">
    <ul class="timeline">
-    <li><div class="tldate">Amsterdam-Central</div></li>
+   <h2><span id="print" style="font-size:1em;" class="glyphicon glyphicon-download-alt">TimeLine</span></h2>
+
+
     
     <li>
+    <div id="TimeLine_1" style="display: none">
       <div class="tl-circ"></div>
       <div class="timeline-panel">
         <div class="tl-heading">
-          <h4>Visit Stedelijk Museum</h4>
-          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 10:00 - 12:00</small></p>
+         <button type = "button" class = "btn btn-default btn-sm" onclick="RemoveLocation(0)">
+          <span class = "glyphicon glyphicon-trash"></span> 
+          </button>
+          <div id= "Timeline_Name_Location_1">
+          <h4> </h4>
+          </div>
+          <p id = "Timeline_Sort_Distance_1"> </p>
+          <p><small class="text-muted"><i id="Timeline_Category_Location_1"></i> </small></p>
         </div>
         <div class="tl-body">
-          <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Stedelijk_Museum_1.jpg/500px-Stedelijk_Museum_1.jpg" alt="central museum"></p>
-          <p>The Stedelijk Museum Amsterdam (Dutch pronunciation: [ˈsteːdələk myˈzeːjʏm ˌɑmstərˈdɑm]; Municipal Museum Amsterdam), colloquially known as the Stedelijk, is a museum for modern art, contemporary art, and design located in Amsterdam, Netherlands.</p>
-          <p> Location:   Museumplein 10</p>
-          <p> <a href="https://www.google.com/maps/dir/Vrije+Universiteit+Amsterdam,+De+Boelelaan,+Amsterdam,+Nederland/Stedelijk+Museum+Amsterdam,+Museumplein,+Amsterdam,+Netherlands/@52.3450734,4.8556786,14z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x47c60a085c443af1:0x2df2d7a997eccd84!2m2!1d4.8657199!2d52.3337568!1m5!1m1!1s0x47c609e567e9302b:0xec3c9aad1ccadbea!2m2!1d4.8797554!2d52.3580111?hl=en">route</a></p>
-
-
+          <p><img id = "Timeline_Photo_Location_1" src=""></p>
+          <p id = "Timeline_Sort_Location_1"> </p>
+          <p id = "Timeline_Sort_Phone_1"> </p>
         </div>
+      </div>
       </div>
     </li>
     
     <li class="timeline-inverted">
+        <div id="TimeLine_2" style="display: none">
       <div class="tl-circ"></div>
       <div class="timeline-panel">
         <div class="tl-heading">
-          <h4>Visit Rijksmuseum</h4>
-          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 12:15 - 15:00</small></p>
+         <button type = "button" class = "btn btn-default btn-sm" onclick="RemoveLocation(1)">
+          <span class = "glyphicon glyphicon-trash"></span> 
+          </button>
+          <div id= "Timeline_Name_Location_2">
+          <h4> </h4>
+          </div>
+          <p id = "Timeline_Sort_Distance_2"> </p>
+          <p><small class="text-muted"><i id="Timeline_Category_Location_2"></i> </small></p>
         </div>
         <div class="tl-body">
-          <p><img src="http://www.kunstcentraal.nl/wp-content/uploads/2013/10/Rijksmuseum.jpg" alt="stedelijk museum"></p>
-          <p>The Rijksmuseum (Dutch pronunciation: [ˈrɛiksmyˌzeːjʏm]; English: State Museum) is a Netherlands national museum dedicated to arts and history in Amsterdam. The museum is located at the Museum Square in the borough Amsterdam South, close to the Van Gogh Museum, the Stedelijk Museum Amsterdam, and the Concertgebouw.</p>
-          <p> Location:   Museumstraat 1</p>
-          <p> <a href="https://www.google.com/maps/dir/Stedelijk+Museum+Amsterdam,+Museumplein,+Amsterdam,+Netherlands/Rijksmuseum,+Museumstraat,+Amsterdam,+Netherlands/@52.3590076,4.8801585,17z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x47c609e567e9302b:0xec3c9aad1ccadbea!2m2!1d4.8797554!2d52.3580111!1m5!1m1!1s0x47c609eec1bb16e5:0xd54373ae6a408585!2m2!1d4.8852188!2d52.3599976?hl=en">route</a></p>
+          <p><img id = "Timeline_Photo_Location_2" src=""></p>
+          <p id = "Timeline_Sort_Location_2"> </p>
+           <p id = "Timeline_Sort_Phone_2"> </p>
+           
         </div>
+      </div>
       </div>
     </li>
     
-    <li><div class="tldate">Amsterdam-South</div></li>
-    
     <li>
+    <div id="TimeLine_3" style="display: none">
       <div class="tl-circ"></div>
       <div class="timeline-panel">
         <div class="tl-heading">
-          <h4>Visit Zuiderkerk</h4>
-          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 15:10 - 15:55</small></p>
+         <button type = "button" class = "btn btn-default btn-sm" onclick="RemoveLocation(2)">
+          <span class = "glyphicon glyphicon-trash"></span> 
+          </button>
+          <div id= "Timeline_Name_Location_3">
+          <h4> </h4>
+          </div>
+          <p id = "Timeline_Sort_Distance_3"> </p>
+          <p><small class="text-muted"><i id="Timeline_Category_Location_3"></i> </small></p>
         </div>
         <div class="tl-body">
-          <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Toren3.jpg/251px-Toren3.jpg" alt="church"></p>
-          <p>The Zuiderkerk ("southern church") is a 17th-century Protestant church in the Nieuwmarkt area of Amsterdam, the capital of the Netherlands. The church played an important part in the life of Rembrandt and was the subject of a painting by Claude Monet.
-
-            The Zuiderkerk was the city's first church built specifically for Protestant services.[2] It was constructed between 1603 and 1611[2] and stands on the Zuiderkerkhof ("Southern Graveyard") square near the Sint Antoniesbreestraat. The distinctive church tower, which dominates the surrounding area, was not completed until 1614 and contains a carillon of bells built by the brothers Hemony, installed in 1656 along with four bells which are rang monthly.</p>
-            <p> Location:   Zuiderkerkhof 72</p>
-            <p> <a href="https://www.google.nl/maps/dir/Rijksmuseum,+Museumstraat,+Amsterdam/Zuiderkerkhof+72,+1011+WB+Amsterdam/@52.3642081,4.883968,15z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x47c609eec1bb16e5:0xd54373ae6a408585!2m2!1d4.8852188!2d52.3599976!1m5!1m1!1s0x47c609beeae3a9e9:0x604fbda221b108c5!2m2!1d4.899804!2d52.3703054">route</a></p>
-
-
-          </div>
+          <p><img id = "Timeline_Photo_Location_3" src=""></p>
+          <p id = "Timeline_Sort_Location_3"> </p>
+          <p id = "Timeline_Sort_Phone_3"> </p>
         </div>
-      </li>
-      
-      <li class="timeline-inverted">
-        <div class="tl-circ"></div>
-        <div class="timeline-panel">
-          <div class="tl-heading">
-            <h4>Visit Vondelpark</h4>
-            <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 16:10 - 17:00</small></p>
-          </div>
-          <div class="tl-body">
-            <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Vondelpark.jpg/532px-Vondelpark.jpg" alt="Vondelpark"></p>
-            <p>The Vondelpark is a public urban park of 47 hectares (120 acres) in Amsterdam, Netherlands. It is part of the borough of Amsterdam-Zuid and situated west from the Leidseplein and the Museumplein. The park was opened in 1865 and originally named the "Nieuwe Park", but later renamed to "Vondelpark", after the 17th-century author Joost van den Vondel. Yearly, the park has around 10 million visitors. In the park is an open-air theatre, a playground and several horeca facilities.</p>
-            <p> Location:  Amsterdam Central</p>
-            <p> <a href="https://www.google.nl/maps/dir/Zuiderkerk,+Zuiderkerkhof,+Amsterdam/vondelpark/@52.3642026,4.8669065,14z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x47c609beeae3a9e9:0x604fbda221b108c5!2m2!1d4.899804!2d52.3703054!1m5!1m1!1s0x47c609e2c5b47ccf:0x6cd478550520ca35!2m2!1d4.8686484!2d52.3579946">route</a></p>
-          </div>
-        </div>
-      </li>
-    </li>
-    <li><div class="tldate">Amsterdam-Central</div></li>
-    <li>
-      <div class="tl-circ"></div>
-      <div class="timeline-panel">
-        <div class="tl-heading">
-          <h4>Time to eat at a italian restaurant</h4>
-          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 17:30 - 19:00</small></p>
-        </div>
-        <div class="tl-body">
-          <p><img src="http://restaurateurs.iens.nl/static/photos/570_0_ff3c0210556fc077985d3a33cad0166f.jpg" alt="restaurant"></p>
-          <p>The best italian restaurant near Vondelpark </p>
-          <p> <h3>Restaurant Sardegna</h3></p>
-          <p> Telephone: 020 673 3333 </p>
-          <p> Location:   Cornelis Schuytstraat 17</p>
-          <p> <a href="https://www.google.nl/maps/dir/Vondelpark,+Amsterdam/Cornelis+Schuytstraat+17,+1071+JD+Amsterdam/@52.3566739,4.8691642,18z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x47c609e2c5b47ccf:0x6cd478550520ca35!2m2!1d4.8686484!2d52.3579946!1m5!1m1!1s0x47c609fc94147be9:0x85f2480870c8089!2m2!1d4.8713976!2d52.3553986">route</a></p>
-
-
-        </div>
+      </div>
       </div>
     </li>
     
     <li class="timeline-inverted">
+        <div id="TimeLine_4" style="display: none">
       <div class="tl-circ"></div>
       <div class="timeline-panel">
         <div class="tl-heading">
-          <h4>Visit Amsterdm Light Festival</h4>
-          <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 19:30 - 22:00</small></p>
+         <button type = "button" class = "btn btn-default btn-sm" onclick="RemoveLocation(3)">
+          <span class = "glyphicon glyphicon-trash"></span> 
+          </button>
+          <div id= "Timeline_Name_Location_4">
+          <h4> </h4>
+          </div>
+          <p id = "Timeline_Sort_Distance_4"> </p>
+          <p><small class="text-muted"><i id="Timeline_Category_Location_4"></i> </small></p>
         </div>
         <div class="tl-body">
-          <p><img src="http://www.mirandapaviljoen.nl/wp-content/uploads/2014/10/Amsterdam-Light-Festival_Alphons-Nieuwenhuis-1.jpg" alt="light"></p>
-          <p>2015/2016 marks the fourth edition of the Amsterdam Light Festival, celebrating a theme of 'Friendship'. A whole host of international artists are contributing to this edition, such as Swedish light artist Aleksandra Stratimirovic, whose 'Northern Lights' sculpture will cross the River Amstel. </p>
-          <p> <a href="https://www.google.nl/maps/dir/restaurant+sardegna+amsterdam/Leidseplein,+Amsterdam/@52.3598847,4.8728507,16z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x47c609fc94147be9:0x85f2480870c8089!2m2!1d4.8713976!2d52.3553986!1m5!1m1!1s0x47c609e8910ce049:0x504e9377f49590ec!2m2!1d4.8820234!2d52.3637081">route</a></p>
+          <p><img id = "Timeline_Photo_Location_4" src=""></p>
+          <p id = "Timeline_Sort_Location_4"> </p>
+          <p id = "Timeline_Sort_Phone_4"> </p>
         </div>
       </div>
+      </div>
     </li>
+
+    <li>
+    <div id="TimeLine_5" style="display: none">
+      <div class="tl-circ"></div>
+      <div class="timeline-panel">
+        <div class="tl-heading">
+         <button type = "button" class = "btn btn-default btn-sm" onclick="RemoveLocation(4)">
+          <span class = "glyphicon glyphicon-trash"></span> 
+          </button>
+          <div id= "Timeline_Name_Location_5">
+          <h4> </h4>
+          </div>
+          <p id = "Timeline_Sort_Distance_5"> </p>
+          <p><small class="text-muted"><i id="Timeline_Category_Location_5"></i> </small></p>
+        </div>
+        <div class="tl-body">
+          <p><img id = "Timeline_Photo_Location_5" src=""></p>
+          <p id = "Timeline_Sort_Location_5"> </p>
+          <p id = "Timeline_Sort_Phone_5"> </p>
+        </div>
+      </div>
+      </div>
+    </li>
+    
+    <li class="timeline-inverted">
+        <div id="TimeLine_6" style="display: none">
+      <div class="tl-circ"></div>
+      <div class="timeline-panel">
+        <div class="tl-heading">
+         <button type = "button" class = "btn btn-default btn-sm" onclick="RemoveLocation(5)">
+          <span class = "glyphicon glyphicon-trash"></span> 
+          </button>
+          <div id= "Timeline_Name_Location_6">
+          <h4> </h4>
+          </div>
+          <p id = "Timeline_Sort_Distance_6"> </p>
+          <p><small class="text-muted"><i id="Timeline_Category_Location_6"></i> </small></p>
+        </div>
+        <div class="tl-body">
+          <p><img id = "Timeline_Photo_Location_6" src=""></p>
+          <p id = "Timeline_Sort_Location_6"> </p>
+           <p id = "Timeline_Sort_Phone_6"> </p>
+        </div>
+      </div>
+      </div>
+    </li>
+    
+    <li>
+    <div id="TimeLine_7" style="display: none">
+      <div class="tl-circ"></div>
+      <div class="timeline-panel">
+        <div class="tl-heading">
+         <button type = "button" class = "btn btn-default btn-sm" onclick="RemoveLocation(6)">
+          <span class = "glyphicon glyphicon-trash"></span> 
+          </button>
+          <div id= "Timeline_Name_Location_7">
+          <h4> </h4>
+          </div>
+          <p id = "Timeline_Sort_Distance_7"> </p>
+          <p><small class="text-muted"><i id="Timeline_Category_Location_7"></i> </small></p>
+        </div>
+        <div class="tl-body">
+          <p><img id = "Timeline_Photo_Location_7" src=""></p>
+          <p id = "Timeline_Sort_Location_7"> </p>
+           <p id = "Timeline_Sort_Phone_7"> </p>
+        </div>
+      </div>
+      </div>
+    </li>
+    
+    <li class="timeline-inverted">
+        <div id="TimeLine_8" style="display: none">
+      <div class="tl-circ"></div>
+      <div class="timeline-panel">
+        <div class="tl-heading">
+         <button type = "button" class = "btn btn-default btn-sm" onclick="RemoveLocation(7)">
+          <span class = "glyphicon glyphicon-trash"></span> 
+          </button>
+          <div id= "Timeline_Name_Location_8">
+          <h4> </h4>
+          </div>
+          <p id = "Timeline_Sort_Distance_8"> </p>
+          <p><small class="text-muted"><i id="Timeline_Category_Location_8"></i> </small></p>
+        </div>
+        <div class="tl-body">
+          <p><img id = "Timeline_Photo_Location_8" src=""></p>
+          <p id = "Timeline_Sort_Location_8"> </p>
+           <p id = "Timeline_Sort_Phone_8"> </p>
+        </div>
+      </div>
+      </div>
+    </li>
+    
+    
   </li>
-
-
-  <li><div class="tldate"><a href="https://www.google.nl/maps/dir/Leidseplein,+Amsterdam/Vrije+Universiteit+Amsterdam,+De+Boelelaan,+Amsterdam/@52.3480261,4.8541156,14z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x47c609e8910ce049:0x504e9377f49590ec!2m2!1d4.8820234!2d52.3637081!1m5!1m1!1s0x47c60a085c443af1:0x2df2d7a997eccd84!2m2!1d4.8657199!2d52.3337568">Return back to starting point</a></p></div></li>
 
 
 </ul>
@@ -238,21 +538,17 @@
 <!-- Account start -->
 
 <section id="account" class="pfblock">
-  <div class="container">
+  <div class="container" id="About" style="display: none">
    <div class="row">
 
     <div class="col-sm-6 col-sm-offset-3">
      <div class="pfblock-header wow fadeInUp">
-      <h4 class="pfblock-title">Your account<button class="btn-container-left" type="button">
-        <span class="glyphicon glyphicon-edit"></span>
-      </button> </h4>
-      <div class="pfblock-subtitle" id="name">Name: Sander Kerkdijk </div>
-      <div class="pfblock-subtitle" id="adress">Adress: Bilderdijkstraat 27 </div>
-      <div class="pfblock-subtitle" id="City">City:  Utrecht </div>
+      <div class="pfblock-subtitle" id="name">Group 3 - IBM Watson Innovation Course </div>
+      <div class="pfblock-subtitle" id="adress">Vrije Universiteit Amsterdam </div>
       <div class="pfblock-subtitle" id="country">Country: The Netherlands </div>
-      <div class="pfblock-subtitle" id="numbertrips">Number of Trips: 4 </div>
-      <div class="pfblock-subtitle" id="Days_left">Days left: 5 </div>
-      <div class="pfblock-subtitle" id="Visited_Attractions">Visited Attractions: 42</div>
+      <div class="pfblock-subtitle" id="numbertrips">Enjoy Your Trips! </div>
+      <div class="pfblock-subtitle" id="numbertrips">Don't hesitate to contact us! </div>
+
       
       
       
@@ -287,21 +583,15 @@
 
     <div class="col-sm-12">
 
-     <ul class="social-links">
-      <li><a href="index.html#" class="wow fadeInUp"><i class="fa fa-facebook"></i></a></li>
-      <li><a href="index.html#" class="wow fadeInUp" data-wow-delay=".1s"><i class="fa fa-twitter"></i></a></li>
-      <li><a href="index.html#" class="wow fadeInUp" data-wow-delay=".2s"><i class="fa fa-google-plus"></i></a></li>
-      <li><a href="index.html#" class="wow fadeInUp" data-wow-delay=".4s"><i class="fa fa-pinterest"></i></a></li>
-      <li><a href="index.html#" class="wow fadeInUp" data-wow-delay=".5s"><i class="fa fa-envelope"></i></a></li>
-    </ul>
 
     <p class="heart">
       Made with <span class="fa fa-heart fa-2x animated pulse"></span> in Amsterdam
     </p>
     <p class="copyright">
-      © 2015 Group 3 - IBM Watson Innovation Course
-    </p>
-
+ <button type="button" class="btn btn-default" aria-label="Right Align" onclick= $('#About').toggle();>
+          <span aria-hidden="true"></span> About Us
+            </button> 
+            </p>
   </div>
 
 </div><!-- .row -->
@@ -320,17 +610,64 @@
 
 <!-- Javascript files -->
 
-<script src="assets/js/jquery-1.11.1.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/jquery.parallax-1.1.3.js"></script>
-<script src="assets/js/imagesloaded.pkgd.js"></script>
-<script src="assets/js/jquery.sticky.js"></script>
-<script src="assets/js/smoothscroll.js"></script>
-<script src="assets/js/wow.min.js"></script>
-<script src="assets/js/jquery.easypiechart.js"></script>
-<script src="assets/js/waypoints.min.js"></script>
-<script src="assets/js/jquery.cbpQTRotator.js"></script>
-<script src="assets/js/custom.js"></script>
+
+
+
+<script>
+var result;
+var distance;
+RefillTimeLine();
+
+  $('#myButton').on('click', function () {
+    var $btn = $(this).button('loading')
+    if(data.length == 4) {
+        alert("You have to maximum of locations in your planning for one day.");
+        $btn.button('reset')
+        } 
+   	else {
+    $('#myPleaseWait').modal('show');
+    var getJSON = function(url) {
+  return new Promise(function(resolve, reject) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function() {
+      var status = xhr.status;
+      if (status == 200) {
+        resolve(xhr.response);
+      } else {
+        reject(status);
+      }
+    };
+    xhr.send();
+  });
+}
+var input = document.getElementById("question").value;
+getJSON('http://127.0.0.1:5000/ask?question='+input).then(function(data) {
+    result = data;
+    predictDistance(result);
+    RefreshData();
+    $btn.button('reset')
+}, function(status) { //error detection....
+  alert('We cannot reach Watson On the Moment');
+  $btn.button('reset')
+});
+ }   
+  })
+
+</script>
+
+
+
+<!-- printing tio -->
+<script>
+
+
+$("#print").click(function(){
+Print();
+  });
+
+</script>
 
 </body>
 </html>
