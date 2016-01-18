@@ -16,12 +16,12 @@ pip install -r requirements.txt
 
 Full working Front-End With
 
-- PDF Printing
-- Distance and Ranking Comparison (Recommendations)
-- Full Responsive
-- TimeLine Representation With Possibility to Remove Recommendations
-- Notifications and Progress Dialogs.
-- etc.
+- PDF printing
+- Distance and ranking comparison (recommendations)
+- Full responsive
+- TimeLine representation with possibility to remove Recommendations
+- Notifications and progress Dialogs.
+- Etc.
 
 ### Prototype
 
@@ -29,4 +29,4 @@ It is still a rapid prototype!
 
 ### Cowboy Coding
 
-One more dedication to Cowboy Coding
+One more tribute to Cowboy Coding
